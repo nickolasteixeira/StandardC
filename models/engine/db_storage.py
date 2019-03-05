@@ -2,7 +2,7 @@
 '''
     Define class DatabaseStorage
 '''
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, desc
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import Base
@@ -25,18 +25,6 @@ class DBStorage:
             user, pwd, host, db), pool_pre_ping=True)
         
 
-    def all(self, cls):
-        '''Query current database session'''
-        db_dict = {}
-
-        objs = self.__session.query(models.classes.get(cls)).all()
-        print("OBJS IN ALL", objs)
-        for obj in objs:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            db_dict[key] = obj
-        return db_dict
-
-
     def new(self, obj):
         '''Add object to current database session'''
         self.__session.add(obj)
@@ -55,14 +43,35 @@ class DBStorage:
                 expire_on_commit=False))
 
     
-    def get(self, cls, amount):
-        '''Retreives one object based on class and amount'''
+    def getNewest(self, cls, amount):
+        '''Retreives newest objects based on class and amount'''
         if not cls or not amount:
             return None
 
-        cls_dict = self.all(cls)
-        fetch = "{}.{}".format(cls, amount)
-        print("FETCH", fetch)
-        return cls_dict.get(fetch)
+        entity = models.classes.get(cls)
+        newest_obj = self.__session.query(entity).order_by(desc(entity.updated_at)).limit(amount).all()
+        return newest_obj
 
+    def getBetweenDate(self, cls, date1, date2):
+        '''Retereives objects between two dates'''
+        if not cls or not date1 or not date2:
+            return None
+
+        entity = models.classes.get(cls)
+        dates = self.__session.query(entity).filter(entity.updated_at.between(date1, date2))
+        return dates
+
+    def to_json(self, all_objs):
+        if not all_objs:
+            return None
+
+        array = []
+        for v in all_objs:
+            new_dict  = {}
+            arr = [a for a in dir(v) if not a.startswith('_') and not callable(getattr(v,a)) and not a.startswith('meta')]
+            for item in arr:
+                new_dict[item] = getattr(v, item)
+            array.append(new_dict)
+
+        return {"all items": array}
 
