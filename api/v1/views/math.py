@@ -73,7 +73,7 @@ def return_math():
     if request.method == "GET":
         values = request.args
         if not validateValues(values):
-           return make_response(jsonify({'error': 'Input correct value to calculate whatever'}), 400) 
+            return make_response(jsonify({'error': 'Incorrect paramers. Please input valid integers'}), 400) 
 
         obj = calcualteValues(values)
         return jsonify(obj)
@@ -83,7 +83,7 @@ def return_math_timeperiod(date1=None, date2=None):
     if validateDates(date1, date2):
         date_objs = storage.getBetweenDate("StandardC", date1, date2)
         if not date_objs:
-            abort(404, "Not Found")
+            return make_response(jsonify({'error': 'Incorrect date values. Enter new valid dates. EX: 2019-03-05'}), 400)   
         new_dict = storage.to_json(date_objs)
         return jsonify(new_dict)
     else:
