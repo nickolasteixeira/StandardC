@@ -16,7 +16,7 @@ Build an API to take in the following values: a,b,c,d, x and returns:
 #### API Routes:
 
 - Correctly uses API Route for the challenge:
-  - API ROUTE: /api/v1/standardc
+  - GET: API ROUTE: /api/v1/standardc
   - parameter values = ['a', 'b', 'c', 'd', 'x']
   - Example Uage:
   - http://52.53.173.11:5000/api/v1/standardc?a=2&b=3&c=4&d=5&x=6
@@ -45,6 +45,14 @@ Build an API to take in the following values: a,b,c,d, x and returns:
   "error": "Incorrect paramers. Please input valid integers"
 }
 ```
+
+ - POST: 
+ - Example Usage:
+
+```
+$ curl -X POST -H "Content-Type: application/json" http://52.53.173.11:5000/api/v1/standardc -d '{"a":2, "b":3,"c":4,"d":5,"x":20}'
+```
+
 
 ### Challenge 2
 
