@@ -42,7 +42,12 @@ class DBStorage:
                 bind=self.__engine,
                 expire_on_commit=False))
 
-    
+   
+    def close(self):
+        '''closes a session with the current database'''
+        self.__session.remove()
+
+
     def getNewest(self, cls, amount):
         '''Retreives newest objects based on class and amount'''
         if not cls or not amount:

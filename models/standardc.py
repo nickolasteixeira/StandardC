@@ -16,9 +16,6 @@ class StandardC(BaseModel, Base):
 
     __tablename__ = "standardc_math"
 
-    id = Column(String(60), nullable=False, primary_key=True)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     a = Column(Integer, nullable=False)
     b = Column(Integer, nullable=False)
     c = Column(Integer, nullable=False)

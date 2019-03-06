@@ -13,7 +13,7 @@ GRANT ALL PRIVILEGES ON dev_db.*
 	TO 'dev'@'localhost';
 
 CREATE TABLE standardc_math
-	(id varchar(60) NOT NULL UNIQUE,
+	(id VARCHAR(60) NOT NULL UNIQUE,
      	created_at DATETIME(6) NOT NULL,
        	updated_at DATETIME(6) NOT NULL,
        	a int NOT NULL,
@@ -21,10 +21,21 @@ CREATE TABLE standardc_math
        	c int NOT NULL,
        	d int NOT NULL,
        	x int NOT NULL,
-	y1 float NOT NULL,
-	y2 float NOT NULL,
-	y3 float NOT NULL,	
+	y1 FLOAT NOT NULL,
+	y2 FLOAT NOT NULL,
+	y3 FLOAT NOT NULL,	
 	PRIMARY KEY (id));
+
+CREATE TABLE users
+	(id VARCHAR(60) NOT NULL UNIQUE,
+	created_at DATETIME(6) NOT NULL,
+	updated_at DATETIME(6) NOT NULL,
+	username VARCHAR(60) NOT NULL,
+	-- SHA-256 encryption
+	password VARCHAR(64) NOT NULL,
+	email VARCHAR(60) NOT NULL,
+	verified BOOLEAN NOT NULL,
+	PRIMARY KEY (id));	
 
 USE performance_schema;
 
